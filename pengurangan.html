@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toko Tukar Balok - Game Pengurangan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#fff6e5;--card:#fff;--ink:#2b2a33;--blue:#2f6fb5;--red:#d6453d;--org:#f08a24;--sun:#f2b632;--mint:#dff3e8;--line:#c9d1df;--ok:#2e9d5b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1f27;--card:#272a35;--ink:#f1efe8;--blue:#6fa8e8;--mint:#24402f;--line:#4a5168}}
+:root[data-theme="dark"]{--bg:#1d1f27;--card:#272a35;--ink:#f1efe8;--blue:#6fa8e8;--mint:#24402f;--line:#4a5168}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.45 Nunito,"Comic Sans MS",system-ui,sans-serif;min-height:100vh}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1,h2,.btn,.num{font-family:"Baloo 2","Comic Sans MS",system-ui,sans-serif}
+h1{font-size:2.1rem;line-height:1.1;color:var(--blue);margin:6px 0}
+[hidden]{display:none!important}
+.card{background:var(--card);border-radius:20px;padding:16px;box-shadow:0 3px 0 var(--line);margin-bottom:14px}
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:12px 16px;margin:8px 0;font-size:1.2rem;font-weight:800;color:#fff;background:var(--blue);cursor:pointer;text-align:left}
+.btn small{display:block;font:600 .85rem Nunito,sans-serif;opacity:.9}
+.btn.alt{background:var(--org)}.btn.ok{background:var(--ok);text-align:center}
+button:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 12px}.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.eq{font:800 2.8rem/1 "Baloo 2",sans-serif;text-align:center;margin:4px 0 10px}
+.say{display:flex;gap:10px;align-items:center;background:var(--mint);border-radius:16px;padding:8px 12px;min-height:64px}
+.say b{font-size:2.2rem}
+.board{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;margin-top:12px}
+.pane{border:3px dashed var(--line);border-radius:16px;padding:8px;min-height:140px}
+.pane h2{font-size:1rem;margin:0 0 6px;text-align:center}
+.items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end}
+.rod{width:28px;height:96px;border:0;border-radius:6px;background:var(--blue);cursor:pointer;transition:transform .15s,opacity .2s}
+.dot{width:34px;height:34px;border:0;border-radius:50%;background:var(--red);cursor:pointer;transition:transform .15s,opacity .2s}
+.dot.new{background:var(--org);animation:pop .4s}
+.rod:active,.dot:active{transform:scale(.9)}
+.off{opacity:.2;position:relative}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .3s}
+.cnt{text-align:center;font-weight:800;margin-top:8px}
+.ch{display:flex;gap:10px;margin-top:12px}.ch .btn{text-align:center;font-size:1.8rem;margin:0}
+.ch .btn:disabled{opacity:.35}
+.big{font-size:3rem;text-align:center}
+.seg{display:flex;gap:8px;margin-top:8px}.sg{flex:1;border:3px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:6px 4px;font:800 1rem "Baloo 2",sans-serif;cursor:pointer}.sg.on{border-color:var(--blue);background:var(--blue);color:#fff}.sg small{font:600 .75rem Nunito,sans-serif}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.vc{display:grid;grid-template-columns:44px 84px 84px;justify-content:center;font:800 3rem/1.2 "Baloo 2",sans-serif;text-align:center;margin:6px 0}
+.vc i{font-style:normal}
+.d{background:none;border:0;color:var(--ink);font:inherit;padding:0}
+button.d{cursor:pointer}
+.d.x{opacity:.45;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:5px}
+.an{color:var(--org);font-size:1.7rem;min-height:2.2rem}
+.ln{grid-column:1/4;border-top:5px solid var(--ink);margin:4px 0}
+.r{color:var(--ok)}
+.pulse{animation:pl 1s infinite;background:var(--sun);color:#2b2a33;border-radius:12px}
+@keyframes pl{50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body><main>
+<div id="start">
+<div class="card"><div class="big">🦊</div><h1>Toko Tukar Balok</h1><p>Halo! Aku Kiko. Bantu aku mengurangi angka dengan balok ya!</p></div>
+<div class="card"><b>Cara main</b><ol><li>🟦 Batang biru = 1 puluhan. 🔴 Titik merah = 1 satuan.</li><li>Kalau titik merahnya kurang, <b>ketuk 1 batang biru</b> untuk ditukar jadi 10 titik oranye.</li><li>Ketuk balok untuk mengambilnya, lalu pilih jawaban sisanya.</li></ol><p><b>Level 5 dan 6 (susun ke bawah):</b> kalau angka atas lebih kecil, kita <b>pinjam</b>. Puluhan dicoret dan dikurangi 1. Satuan dicoret dan ditambah 10 (misalnya 2 jadi 12).</p></div>
+<div class="card"><b>Rentang angka</b><div class="seg"><button class="sg on" onclick="setR(2)">Puluhan<br><small>10–99</small></button><button class="sg" onclick="setR(3)">Ratusan<br><small>100–999</small></button><button class="sg" onclick="setR(4)">Ribuan<br><small>1.000–9.999</small></button></div><p id="rnote" hidden style="margin:8px 0 0">Ratusan dan ribuan dimainkan di <b>Level 5 atau 6</b> (susun ke bawah). Mulai dari kolom satuan, lalu ke kiri. Level balok (1–4) hanya untuk puluhan.</p></div>
+<button class="btn" onclick="go(1)">Level 1: Pemanasan<small>Tanpa menukar</small></button>
+<button class="btn" onclick="go(2)">Level 2: Tukar balok<small>Satuan kurang, tukar 1 puluhan</small></button>
+<button class="btn" onclick="go(3)">Level 3: Satuan kosong<small>Contoh 60 − 34</small></button>
+<button class="btn alt" onclick="go(4)">Level 4: Campur<small>Semua jenis soal</small></button>
+<button class="btn" style="background:#7a4fb0" onclick="go(5)">Level 5: Susun ke bawah<small>Pinjam langkah demi langkah, dengan petunjuk</small></button>
+<button class="btn" style="background:#7a4fb0" onclick="go(6)">Level 6: Susun ke bawah (mandiri)<small>Petunjuk lebih sedikit, soal harus meminjam</small></button>
+</div>
+<div id="game" hidden>
+<div class="top"><span id="prog"></span><span id="stars"></span></div><div class="bar"><i id="pb"></i></div>
+<div class="card"><div class="eq" id="eq"></div>
+<div class="say"><b>🦊</b><span id="say"></span></div>
+<div class="board"><div class="pane"><h2>Puluhan 🟦</h2><div class="items" id="tens"></div></div><div class="pane"><h2>Satuan 🔴</h2><div class="items" id="ones"></div></div></div>
+<div id="col" hidden></div><div class="cnt" id="cnt"></div>
+<div class="ch" id="ch" hidden></div>
+<button class="btn ok" id="next" hidden onclick="nextQ()">Lanjut ➡️</button></div>
+<button class="btn" style="background:var(--line);color:var(--ink);text-align:center" onclick="show('start')">Pilih level</button>
+</div>
+<div id="end" hidden><div class="card"><div class="big" id="estars"></div><h1 id="emsg"></h1><p id="esub"></p></div>
+<button class="btn ok" onclick="go(lv)">Main lagi 🔁</button><button class="btn" onclick="show('start')">Pilih level lain</button></div>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},R=function(a,b){return a+Math.floor(Math.random()*(b-a+1))};
+var lv,Q,qi,stars,a,b,bt,bo,tt,to,T,O,ph;
+function show(x){['start','game','end'].forEach(function(i){$(i).hidden=i!=x})}
+function gen(l){var at,ao,bt2,bo2;if(l==1){at=R(3,9);ao=R(4,9);bt2=R(1,at-1);bo2=R(0,ao)}else if(l==2){at=R(2,9);ao=R(0,8);bt2=R(1,at-1);bo2=R(ao+1,9);if(ao==0){ao=R(1,8);bo2=R(ao+1,9)}}else{at=R(2,9);ao=0;bt2=R(1,at-1);bo2=R(1,9)}return [at*10+ao,bt2*10+bo2]}
+function go(l){lv=l;Q=[];for(var i=0;i<6;i++)Q.push(l>4?(l==5?(i%3==0?gv(rg,0,0):gv(rg,1,rg-1)):gv(rg,rg>2?2:1,rg-1)):gen(l==4?R(1,3):l));qi=0;stars=0;show('game');load()}
+function say(t){$('say').textContent=t}
+function load(){a=Q[qi][0];b=Q[qi][1];$('col').hidden=lv<5;document.querySelector('.board').hidden=lv>4;$('cnt').hidden=lv>4;bw=false;bt=Math.floor(b/10);bo=b%10;tt=0;to=0;T=[];O=[];for(var i=0;i<Math.floor(a/10);i++)T.push({s:1});for(i=0;i<a%10;i++)O.push({s:1});ph=a%10<bo?'trade':'take';
+$('eq').textContent=a+' − '+b+' = ?';$('ch').hidden=true;$('next').hidden=true;$('prog').textContent='Soal '+(qi+1)+' dari '+Q.length;$('stars').textContent='⭐ '+stars;$('pb').style.width=(qi/Q.length*100)+'%';
+say(ph=='trade'?'Satuannya kurang dari '+bo+'! Ketuk 1 batang biru untuk menukarnya jadi 10 titik.':'Ketuk balok untuk mengambil '+bt+' puluhan dan '+bo+' satuan.');if(lv>4)vload();else draw()}
+function draw(){$('tens').innerHTML=T.map(function(x,i){return x.s==9?'':'<button class="rod'+(x.s?'':' off')+'" aria-label="batang puluhan" onclick="tapT('+i+')"></button>'}).join('');
+$('ones').innerHTML=O.map(function(x,i){return '<button class="dot'+(x.n?' new':'')+(x.s?'':' off')+'" aria-label="satuan" onclick="tapO('+i+')"></button>'}).join('');
+$('cnt').textContent='Diambil: '+tt+' dari '+bt+' puluhan · '+to+' dari '+bo+' satuan'}
+function tapT(i){var x=T[i];if(!x.s||ph=='ans'||ph=='done')return;
+if(ph=='trade'){x.s=9;for(var j=0;j<10;j++)O.push({s:1,n:1});ph='take';say('Hebat! 1 puluhan jadi 10 satuan. Sekarang ketuk '+bo+' titik untuk diambil.')}
+else if(tt<bt){x.s=0;tt++;chk()}else say('Puluhan sudah cukup diambil. Satuanmu cukup, jadi tidak perlu menukar.');draw()}
+function tapO(i){var x=O[i];if(!x.s||ph=='ans'||ph=='done')return;
+if(ph=='trade')say('Satuannya kurang! Tukar dulu: ketuk 1 batang biru.');
+else if(to<bo){x.s=0;to++;chk()}else say('Satuan sudah cukup diambil.');draw()}
+function chk(){if(tt==bt&&to==bo){ph='ans';say('Bagus! Sekarang, berapa sisa balok semuanya?');choices()}else say('Kurang '+(bt-tt)+' puluhan dan '+(bo-to)+' satuan lagi.')}
+function choices(){var r=a-b,w=(Math.floor(a/10)-bt)*10+Math.abs(a%10-bo),o=[r],c=[w,r+10,r-10,r+1,r-1];c.forEach(function(v){if(o.length<3&&v>=0&&o.indexOf(v)<0)o.push(v)});o.sort(function(){return Math.random()-.5});
+$('ch').hidden=false;$('ch').innerHTML=o.map(function(v){return '<button class="btn" onclick="pick(this,'+v+')">'+v+'</button>'}).join('')}
+function pick(el,v){if(v==a-b){ph='done';stars++;$('stars').textContent='⭐ '+stars;say('Benar! 🎉 Cek: '+(a-b)+' + '+b+' = '+a+'. Cocok!');el.style.background='var(--ok)';Array.prototype.forEach.call($('ch').children,function(x){x.disabled=true});el.disabled=false;$('next').hidden=false}
+else{var rt=T.filter(function(x){return x.s==1}).length,ro=O.filter(function(x){return x.s==1}).length;say('Hampir! Hitung dulu sisa balok: '+rt+' puluhan dan '+ro+' satuan.');el.disabled=true;el.classList.add('shake')}}
+var at,ao,vs,ov,tv,r1,r2,G,bw;
+function mk(c,al){var o=[c];al.forEach(function(v){if(o.length<3&&v>=0&&o.indexOf(v)<0)o.push(v)});return o.sort(function(){return Math.random()-.5})}
+function vch(o){$('ch').hidden=false;$('ch').innerHTML=o.map(function(v){return '<button class="btn" onclick="vpick(this,\''+v+'\')">'+v+'</button>'}).join('')}
+function vload(){at=Math.floor(a/10);ao=a%10;ov=ao;tv=at;r1=r2=null;vs='can';G=lv==5;say(G?'Langkah 1: Lihat satuannya dulu, yaitu '+ao+' dan '+bo+'. Bisakah '+ao+' − '+bo+'?':'Langkah 1: Bisakah '+ao+' − '+bo+'?');vch(['Bisa','Tidak bisa']);vdraw()}
+function vdraw(){var x=bw?' x':'';$('col').innerHTML='<div class="vc"><i></i><span class="an">'+(bw?tv:'')+'</span><span class="an">'+(bw?ov:'')+'</span><i></i><button class="d'+x+(vs=='borrow'?' pulse':'')+'" onclick="vtap()" aria-label="angka puluhan">'+at+'</button><span class="d'+x+'">'+ao+'</span><i>−</i><span class="d">'+bt+'</span><span class="d">'+bo+'</span><div class="ln"></div><i></i><span class="d r">'+(r2==null?'?':r2)+'</span><span class="d r">'+(r1==null?'?':r1)+'</span></div>'}
+function vtap(){if(vs=='borrow'){bw=true;tv=at-1;ov=ao+10;vs='ones';say(G?'Puluhan '+at+' dicoret, jadi '+tv+' (dikurangi 1). Satuan '+ao+' dicoret, jadi '+ov+' (ditambah 10). Langkah 3: '+ov+' − '+bo+' = ?':'Langkah 3: '+ov+' − '+bo+' = ?');vch(mk(ov-bo,[ov-bo+1,ov-bo-1,bo-ao]));vdraw()}else say(vs=='can'?'Jawab dulu pertanyaan di bawah ya.':'Kamu tidak perlu meminjam sekarang.')}
+function vpick(el,v){var ok=false,bad;
+if(vs=='can'){ok=v==(ao>=bo?'Bisa':'Tidak bisa');if(ok){if(ao>=bo){vs='ones';say('Langkah 2: '+ao+' − '+bo+' = ?');vch(mk(ao-bo,[ao-bo+1,ao-bo-1,ao+bo]))}else{vs='borrow';$('ch').hidden=true;say(G?'Tidak bisa, karena '+ao+' lebih kecil dari '+bo+'. Langkah 2: Pinjam dari puluhan! Ketuk angka puluhan ('+at+') yang berkedip.':'Langkah 2: Pinjam! Ketuk angka puluhan.')}vdraw()}else bad=G?ao+' dan '+bo+': kalau angka atas lebih kecil dari angka bawah, tidak bisa dikurangi.':'Coba lagi.'}
+else if(vs=='ones'){ok=+v==ov-bo;if(ok){r1=ov-bo;vs='tens';say('Langkah '+(bw?4:3)+': '+tv+' − '+bt+' = ?');vch(mk(tv-bt,[tv-bt+1,tv-bt-1,at-bt]));vdraw()}else bad=G?'Hitung pelan-pelan: '+ov+' − '+bo+'.':'Coba lagi.'}
+else if(vs=='tens'){ok=+v==tv-bt;if(ok){r2=tv-bt;vs='done';stars++;$('stars').textContent='⭐ '+stars;$('ch').hidden=true;$('next').hidden=false;say('Hebat! 🎉 Jawabannya '+(a-b)+'. Cek: '+(a-b)+' + '+b+' = '+a+' ✓');vdraw()}else bad=G?'Ingat: puluhan '+(bw?'sudah dikurangi 1 karena dipinjam, jadi '+tv:'tetap '+tv)+'. Hitung '+tv+' − '+bt+'.':'Coba lagi.'}
+if(!ok){say(bad);el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}}
+var rg=2,A,Bd,cur,Rr,ci,nd,bl,PN=['satuan','puluhan','ratusan','ribuan'];
+function setR(n){rg=n;var s=document.querySelectorAll('.sg'),i;for(i=0;i<3;i++)s[i].classList.toggle('on',i==n-2);var bs=document.querySelectorAll('#start .btn');for(i=0;i<4;i++)bs[i].disabled=n>2;$('rnote').hidden=n==2}
+function fm(x){return x.toLocaleString('id-ID')}
+function dg(x,n){var r=[];for(var i=0;i<n;i++){r.push(x%10);x=Math.floor(x/10)}return r}
+function sim(A,B){var c=A.slice(),n=A.length,k=0;for(var i=0;i<n;i++)if(c[i]<B[i]){if(i==n-1)return -1;c[i]+=10;c[i+1]--;k++}return k}
+function gv(n,mn,mx){for(;;){var A=[],B=[],i;for(i=0;i<n;i++){A.push(i==0?R(0,9):i==n-1?R(2,9):R(1,9));B.push(R(0,9))}if(n>2&&R(0,1))B[n-1]=0;var k=sim(A,B),a=0,b=0;for(i=n-1;i>=0;i--){a=a*10+A[i];b=b*10+B[i]}if(k>=mn&&k<=mx&&b>=10&&a>b)return [a,b]}}
+function vload(){nd=rg;A=dg(a,nd);Bd=dg(b,nd);cur=A.slice();Rr=[];ci=0;bl=String(b).length;G=lv==5;$('eq').textContent=fm(a)+' \u2212 '+fm(b)+' = ?';vq();vdraw()}
+function vq(){vs='can';var x=cur[ci],y=Bd[ci];say(G?'Kolom '+PN[ci]+': lihat angka '+x+' dan '+y+'. Bisakah '+x+' \u2212 '+y+'?':'Kolom '+PN[ci]+': bisakah '+x+' \u2212 '+y+'?');vch(['Bisa','Tidak bisa'])}
+function vdraw(){var s='<div class="vc" style="grid-template-columns:40px repeat('+nd+',72px)"><i></i>',i;
+for(i=nd-1;i>=0;i--)s+='<span class="an">'+(cur[i]!=A[i]?cur[i]:'')+'</span>';
+s+='<i></i>';for(i=nd-1;i>=0;i--){var c=cur[i]!=A[i]?' x':'',pu=vs=='borrow'&&i==ci+1;s+=pu?'<button class="d'+c+' pulse" onclick="vtap()" aria-label="angka '+PN[i]+'">'+A[i]+'</button>':'<span class="d'+c+'">'+A[i]+'</span>'}
+s+='<i>\u2212</i>';for(i=nd-1;i>=0;i--)s+='<span class="d">'+(i<bl?Bd[i]:'')+'</span>';
+s+='<div class="ln" style="grid-column:1/'+(nd+2)+'"></div><i></i>';
+for(i=nd-1;i>=0;i--){var v=Rr[i],z=v===0;for(var j=i+1;j<nd;j++)if(Rr[j]!==0)z=false;s+='<span class="d r">'+(v===undefined?'?':z?'':v)+'</span>'}
+$('col').innerHTML=s+'</div>'}
+function vtap(){if(vs=='borrow'){var i=ci+1;cur[i]--;cur[ci]+=10;vs='sub';var x=cur[ci],y=Bd[ci];say(G?'Dipinjam! Angka '+PN[i]+' dicoret, dikurangi 1 jadi '+cur[i]+'. Angka '+PN[ci]+' dicoret, ditambah 10 jadi '+x+'. Sekarang hitung '+x+' \u2212 '+y+' = ?':x+' \u2212 '+y+' = ?');vch(mk(x-y,[x-y+1,x-y-1,y-A[ci]>0?y-A[ci]:x+y]));vdraw()}else say(vs=='can'?'Jawab dulu pertanyaan di bawah ya.':'Tidak perlu meminjam sekarang.')}
+function vpick(el,v){var ok=false,bad,x=cur[ci],y=Bd[ci];
+if(vs=='can'){ok=v==(x>=y?'Bisa':'Tidak bisa');if(ok){if(x>=y){vs='sub';say('Hitung '+x+' \u2212 '+y+' = ?');vch(mk(x-y,[x-y+1,x-y-1,x+y]))}else{vs='borrow';$('ch').hidden=true;say(G?'Tidak bisa, karena '+x+' lebih kecil dari '+y+'. Pinjam dari kolom '+PN[ci+1]+'! Ketuk angka '+PN[ci+1]+' yang berkedip.':'Pinjam! Ketuk angka '+PN[ci+1]+'.')}vdraw()}else bad=G?x+' dan '+y+': kalau angka atas lebih kecil dari angka bawah, tidak bisa dikurangi.':'Coba lagi.'}
+else if(vs=='sub'){ok=+v==x-y;if(ok){Rr[ci]=x-y;ci++;while(ci<nd&&ci>=bl){Rr[ci]=cur[ci];ci++}if(ci>=nd){vs='done';stars++;$('stars').textContent='\u2b50 '+stars;$('ch').hidden=true;$('next').hidden=false;say('Hebat! \ud83c\udf89 Jawabannya '+fm(a-b)+'. Cek: '+fm(a-b)+' + '+fm(b)+' = '+fm(a)+' \u2713')}else vq();vdraw()}else bad=G?'Hitung pelan-pelan: '+x+' \u2212 '+y+'.':'Coba lagi.'}
+if(!ok){say(bad);el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}}
+function nextQ(){qi++;if(qi>=Q.length){var m=stars>=6?'Hebat sekali! 🏆':stars>=4?'Kerja bagus! 👏':'Ayo coba lagi! 💪';$('estars').textContent='⭐'.repeat(stars)||'🌱';$('emsg').textContent=m;$('esub').textContent='Kamu menjawab '+stars+' dari '+Q.length+' soal dengan benar.';show('end')}else load()}
+</script></body></html>
